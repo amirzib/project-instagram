@@ -1,0 +1,26 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*- 
+from instagrapi import Client
+import pandas as pd
+import re
+cl = Client()
+log_user= int(input("How many user for login? "))
+for j in range (log_user):
+    user=input("Enter your username: ")
+    pas=input("Enter your password: ")
+    print("logging in...")
+    cl.login(user,pas)
+    text=input("Enter the message: ")
+    path= input("Enter the file path: ")
+    f_path=re.sub(r'\"','', path)
+    file_path =f_path
+    df = pd.read_csv(file_path)
+    natije= re.sub(r'\s+' , '' ,str(df))
+    res= re.sub(r'\d', ' ', natije)
+    string_list= res.split()
+    print("plz wait...")
+    for name in string_list:
+        user_name= name
+        send_to = cl.user_id_from_username(username=user_name)
+        message=cl.direct_send (text=text,user_ids= [send_to])
+    print("All messages sent!")
